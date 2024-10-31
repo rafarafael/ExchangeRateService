@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exchange Rate</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .latest-rate {
+            border: 1px solid #4CAF50;
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .latest-rate h3 {
+            margin: 0 0 10px;
+            color: #333;
+        }
+
+        .latest-rate p {
+            margin: 5px 0;
+        }
+
+        .latest-rate .label {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Exchange Rate</h1>
+
+    <h2>Latest Rate</h2>
+    <div id="latest-rate" class="latest-rate">
+        <h3>Awaiting data...</h3>
+    </div>
+
+    <h2>Historical Rates</h2>
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate">
+    <label for="endDate">End Date:</label>
+    <input type="date" id="endDate">
+    <button onclick="fetchHistoricalRates()">Fetch Historical Rates</button>
+
+    <table id="historical-rates-table" style="display: none;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Base Currency</th>
+                <th>Target Currency</th>
+                <th>Rate</th>
+                <th>Timestamp</th>
+                <th>API Timestamp</th>
+            </tr>
+        </thead>
+        <tbody id="historical-rates-body"></tbody>
+    </table>
+
+    <script>
+        const BASE_URL = `${window.location.origin}/exchange`;
+
+        // Fetch the latest exchange rate when the page loads
+        async function fetchLatestRate() {
+            try {
+                const response = await fetch(`${BASE_URL}/latest`);
+                const data = await response.json();
+                displayLatestRate(data);
+            } catch (error) {
+                console.error('Error fetching latest rate:', error);
+                document.getElementById('latest-rate').innerHTML = '<p>Error fetching the latest rate.</p>';
+            }
+        }
+
+        // Display the latest rate in a user-friendly format
+        function displayLatestRate(rate) {
+            document.getElementById('latest-rate').innerHTML = `
+                <h3>Latest Exchange Rate</h3>
+                <p><span class="label">Base Currency:</span> ${rate.baseCurrency}</p>
+                <p><span class="label">Target Currency:</span> ${rate.targetCurrency}</p>
+                <p><span class="label">Rate:</span> ${rate.rate}</p>
+                <p><span class="label">Timestamp:</span> ${new Date(rate.timestamp).toLocaleString()}</p>
+                <p><span class="label">API Timestamp:</span> ${new Date(rate.apiTimestamp).toLocaleString()}</p>
+            `;
+        }
+
+        // Fetch historical rates based on selected dates
+        async function fetchHistoricalRates() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+
+            if (!startDate || !endDate) {
+                alert('Please select both start and end dates.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${BASE_URL}/historical?startDate=${startDate}&endDate=${endDate}`);
+                const data = await response.json();
+
+                // Populate the table with historical rates
+                const tableBody = document.getElementById('historical-rates-body');
+                tableBody.innerHTML = ''; // Clear existing rows
+                data.forEach(rate => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${rate.idRate}</td>
+                        <td>${rate.baseCurrency}</td>
+                        <td>${rate.targetCurrency}</td>
+                        <td>${rate.rate}</td>
+                        <td>${rate.timestamp}</td>
+                        <td>${rate.apiTimestamp}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+
+                // Show the table
+                document.getElementById('historical-rates-table').style.display = 'table';
+            } catch (error) {
+                console.error('Error fetching historical rates:', error);
+            }
+        }
+
+        // Call the function to fetch the latest rate on page load
+        fetchLatestRate();
+    </script>
+</body>
+
+</html>
