@@ -1,6 +1,6 @@
 # Currency Exchange Rate Service
 
-[Exchange Rate Service](http://ec2-13-59-200-165.us-east-2.compute.amazonaws.com:8080/)
+Link para a aplicação na AWS: [Exchange Rate Service](http://ec2-13-59-200-165.us-east-2.compute.amazonaws.com:8080/)
 
 ## Descrição
 Este projeto é um serviço que monitora constantemente a taxa de câmbio entre o Real (BRL) e o Dólar (USD). Ele fornece uma API RESTful para obter a taxa mais recente e consultar taxas históricas em um intervalo de datas configurável. O serviço é desenvolvido com Spring Boot e armazena os dados em um banco de dados MySQL.
