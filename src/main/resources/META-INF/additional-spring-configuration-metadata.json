@@ -1,0 +1,22 @@
+{"properties": [
+  {
+    "name": "exchange.rate.check.period",
+    "type": "java.lang.Long",
+    "description": "Interval"
+  },
+  {
+    "name": "api.exchange-rate.url",
+    "type": "java.lang.String",
+    "description": "A description for 'api.exchange-rate.url'"
+  },
+  {
+    "name": "api.exchange-rate.key",
+    "type": "java.lang.String",
+    "description": "A description for 'api.exchange-rate.key'"
+  },
+  {
+    "name": "fetch.interval",
+    "type": "java.lang.String",
+    "description": "A description for 'fetch.interval'"
+  }
+]}
