@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# ExchangeRateService
-=======
 # Currency Exchange Rate Service
 
 ## Descrição
